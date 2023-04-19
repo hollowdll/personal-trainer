@@ -1,9 +1,9 @@
 import { Customer } from "./customer";
 
 export interface Training {
-  id: string,
+  id: number,
   date: string,
-  duration: string,  // Duration in minutes
+  duration: number,  // Duration in minutes
   activity: string,
   customer: Customer,
 }
