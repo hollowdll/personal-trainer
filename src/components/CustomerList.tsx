@@ -45,7 +45,7 @@ function CustomerList() {
             filter: true,
             sortable: true,
             resizable: true,
-            floatingFilter: true
+            floatingFilter: true,
           }}
         ></AgGridReact>
       </div>

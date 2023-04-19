@@ -1,8 +1,8 @@
 export interface Customer {
   id: number,
-  firstName: string,
-  lastName: string,
-  streetAddress: string,
+  firstname: string,
+  lastname: string,
+  streetaddress: string,
   postcode: string,
   city: string,
   email: string,
