@@ -3,9 +3,13 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 import { Customer } from "../types/customer";
+import { Stack } from "@mui/material";
+
+import AddCustomer from "./AddCustomer";
 
 function CustomerList() {
   const [customers, setCustomers] = useState<Array<Customer>>([]);
+  const [message, setMessage] = useState("");
 
   const columnDefs = [
     { headerName: "ID", field: "id" },
@@ -20,6 +24,10 @@ function CustomerList() {
 
   // Fetch all customers when rendered
   useEffect(() => {
+    fetchCustomers();
+  }, []);
+
+  const fetchCustomers = () => {
     fetch("https://traineeapp.azurewebsites.net/getcustomers")
       .then(response => {
         if (!response.ok) {
@@ -30,11 +38,36 @@ function CustomerList() {
       })
       .then(data => setCustomers(data))
       .catch(err => console.error(err));
-  }, []);
+  }
+
+  const addCustomer = (customer: Customer) => {
+    console.log("add customer");
+    console.log(customer);
+
+    fetch("https://traineeapp.azurewebsites.net/api/customers", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(customer),
+    })
+      .then(response => {
+        if (!response.ok) {
+          setMessage("Failed to add customer");
+          throw new Error("Fetch failed: " + response.statusText);
+        }
+
+        setMessage("Customer added successfully");
+        fetchCustomers();
+      })
+      .catch((err) => console.error(err));
+  };
 
   return (
     <div>
       <h1>Customers</h1>
+      <p>{message}</p>
+      <Stack spacing={2} direction="row">
+        <AddCustomer addCustomer={addCustomer} />
+      </Stack>
       <div className="ag-theme-material" style={{ height: "500px" }}>
         <AgGridReact
           columnDefs={columnDefs}

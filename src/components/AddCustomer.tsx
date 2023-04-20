@@ -5,7 +5,11 @@ import { DialogActions, DialogContent, DialogTitle, TextField } from '@mui/mater
 import AddIcon from "@mui/icons-material/Add";
 import { Customer } from "../types/customer";
 
-function AddCustomer() {
+type Props = {
+  addCustomer: (customer: Customer) => void,
+}
+
+function AddCustomer({ addCustomer }: Props) {
   const [customer, setCustomer] = useState<Customer>({
     id: 0,
     firstname: "",
@@ -23,7 +27,8 @@ function AddCustomer() {
   }
 
   const handleSave = () => {
-    // saveCustomer(customer);
+    addCustomer(customer);
+    handleClose();
   }
 
   const inputChanged = (event: ChangeEvent<HTMLInputElement>) => {
@@ -39,7 +44,7 @@ function AddCustomer() {
       <Button
         onClick={handleClickOpen}
         variant="outlined"
-        endIcon={<AddIcon />}
+        startIcon={<AddIcon />}
       >
         Add Customer
       </Button>
