@@ -17,9 +17,9 @@ function CustomerList() {
 
   const columnDefs = [
     { headerName: "ID", field: "id" },
-    { headerName: "First name", field: "firstname" },
-    { headerName: "Last name", field: "lastname" },
-    { headerName: "Street address", field: "streetaddress" },
+    { headerName: "First Name", field: "firstname" },
+    { headerName: "Last Name", field: "lastname" },
+    { headerName: "Street Address", field: "streetaddress" },
     { field: "postcode" },
     { field: "city" },
     { field: "email" },
