@@ -4,8 +4,12 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 import { Customer } from "../types/customer";
 import { Stack } from "@mui/material";
+import { ValueGetterParams } from "ag-grid-community";
 
 import AddCustomer from "./AddCustomer";
+import EditCustomer from "./EditCustomer";
+
+import { API_HOST_URL } from "../utils/const";
 
 function CustomerList() {
   const [customers, setCustomers] = useState<Array<Customer>>([]);
@@ -19,7 +23,19 @@ function CustomerList() {
     { field: "postcode" },
     { field: "city" },
     { field: "email" },
-    { field: "phone" }
+    { field: "phone" },
+    // Edit button column
+    {
+      headerName: "",
+      filter: false,
+      sortable: false,
+      cellStyle: { border: "none" },
+      cellRenderer: (params: ValueGetterParams<Customer>) => {
+        return (
+          <EditCustomer updateCustomer={updateCustomer} params={params} />
+        );
+      }
+    }
   ];
 
   useEffect(() => {
@@ -28,7 +44,7 @@ function CustomerList() {
 
   // Fetch all customers
   const fetchCustomers = () => {
-    fetch("https://traineeapp.azurewebsites.net/getcustomers")
+    fetch(`${API_HOST_URL}/getcustomers`)
       .then(response => {
         if (!response.ok) {
           throw new Error("Failed to fetch customers data");
@@ -42,13 +58,21 @@ function CustomerList() {
 
   // Add a new customer
   const addCustomer = (customer: Customer) => {
-    console.log("add customer");
+    console.log("ADD CUSTOMER");
     console.log(customer);
 
-    fetch("https://traineeapp.azurewebsites.net/api/customers", {
+    fetch(`${API_HOST_URL}/api/customers`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(customer),
+      body: JSON.stringify({
+        firstname: customer.firstname,
+        lastname: customer.lastname,
+        streetaddress: customer.streetaddress,
+        postcode: customer.postcode,
+        city: customer.city,
+        email: customer.email,
+        phone: customer.phone,
+      }),
     })
       .then(response => {
         if (!response.ok) {
@@ -61,6 +85,36 @@ function CustomerList() {
       })
       .catch((err) => console.error(err));
   };
+
+  // Update a customer
+  const updateCustomer = (customer: Customer) => {
+    console.log("UPDATE CUSTOMER");
+    console.log(customer);
+
+    fetch(`${API_HOST_URL}/api/customers/${customer.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        firstname: customer.firstname,
+        lastname: customer.lastname,
+        streetaddress: customer.streetaddress,
+        postcode: customer.postcode,
+        city: customer.city,
+        email: customer.email,
+        phone: customer.phone,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          setMessage("Failed to update customer");
+          throw new Error("Fetch failed: " + response.statusText);
+        }
+
+        setMessage("Customer updated successfully");
+        fetchCustomers();
+      })
+      .catch((err) => console.error(err));
+  }
 
   return (
     <div>
