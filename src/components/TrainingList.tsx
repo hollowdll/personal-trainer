@@ -9,6 +9,7 @@ import { Training } from "../types/training";
 
 function TrainingList() {
   const [trainings, setTrainings] = useState<Array<Training>>([]);
+  // const [message, setMessage] = useState("");
 
   // Format training date
   const formatDate = (params: ValueGetterParams<Training>) => {
@@ -24,7 +25,8 @@ function TrainingList() {
   // Show customer's full name
   const showCustomerFullName = (params: ValueGetterParams<Training>) => {
     if (params.data) {
-      return params.data.customer.firstname + " " + params.data.customer.lastname;
+      const customer = params.data.customer;
+      return customer ? `${customer.firstname} ${customer.lastname}` : "No customer found";
     } else {
       return "Failed to load";
     }
@@ -43,11 +45,15 @@ function TrainingList() {
       headerName: "Customer",
       field: "customer",
       valueGetter: showCustomerFullName,
-    } 
+    }
   ];
 
-  // Fetch all trainings when rendered
   useEffect(() => {
+    fetchTrainings();
+  }, []);
+
+  // Fetch all trainings
+  const fetchTrainings = () => {
     fetch("https://traineeapp.azurewebsites.net/gettrainings")
       .then(response => {
         if (!response.ok) {
@@ -58,7 +64,7 @@ function TrainingList() {
       })
       .then(data => setTrainings(data))
       .catch(err => console.error(err));
-  }, []);
+  }
 
   return (
     <div>

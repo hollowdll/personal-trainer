@@ -1,7 +1,12 @@
 import { useState, ChangeEvent } from "react";
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import { DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import {
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+  Dialog,
+  Button
+} from '@mui/material';
 import AddIcon from "@mui/icons-material/Add";
 import { Customer } from "../types/customer";
 

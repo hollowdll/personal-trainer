@@ -22,11 +22,11 @@ function CustomerList() {
     { field: "phone" }
   ];
 
-  // Fetch all customers when rendered
   useEffect(() => {
     fetchCustomers();
   }, []);
 
+  // Fetch all customers
   const fetchCustomers = () => {
     fetch("https://traineeapp.azurewebsites.net/getcustomers")
       .then(response => {
@@ -40,6 +40,7 @@ function CustomerList() {
       .catch(err => console.error(err));
   }
 
+  // Add a new customer
   const addCustomer = (customer: Customer) => {
     console.log("add customer");
     console.log(customer);
