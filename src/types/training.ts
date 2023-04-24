@@ -5,5 +5,5 @@ export interface Training {
   date: string,
   duration: number,  // Duration in minutes
   activity: string,
-  customer: Customer,
+  customer: Customer | null,
 }

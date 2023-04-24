@@ -56,10 +56,6 @@ function CustomerList() {
     }
   ];
 
-  useEffect(() => {
-    fetchCustomers();
-  }, []);
-
   // Fetch all customers
   const fetchCustomers = () => {
     fetch(`${API_HOST_URL}/getcustomers`)
@@ -155,6 +151,10 @@ function CustomerList() {
         .catch((err) => console.error(err));
     }
   }
+
+  useEffect(() => {
+    fetchCustomers();
+  }, []);
 
   return (
     <div>

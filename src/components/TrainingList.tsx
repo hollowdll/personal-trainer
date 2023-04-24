@@ -5,7 +5,11 @@ import "ag-grid-community/styles/ag-theme-material.css";
 import { ValueGetterParams } from "ag-grid-community";
 import { format } from "date-fns";
 import { enUS } from "date-fns/locale";
+
+import { Stack } from "@mui/material";
+
 import { Training } from "../types/training";
+import AddTraining from "./AddTraining";
 
 function TrainingList() {
   const [trainings, setTrainings] = useState<Array<Training>>([]);
@@ -69,6 +73,9 @@ function TrainingList() {
   return (
     <div>
       <h1>Trainings</h1>
+      <Stack spacing={2} direction="row">
+        <AddTraining />
+      </Stack>
       <div className="ag-theme-material" style={{ height: "500px" }}>
         <AgGridReact
           columnDefs={columnDefs}
