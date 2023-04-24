@@ -9,6 +9,10 @@ import {
 } from '@mui/material';
 import AddIcon from "@mui/icons-material/Add";
 
+import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { enUS } from "date-fns/locale";
+
 import { Training } from "../types/training";
 
 function AddTraining() {
@@ -19,6 +23,7 @@ function AddTraining() {
     activity: "",
     customer: null,
   });
+  const [customerId, setCustomerId] = useState(0);
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleClose = () => {
@@ -49,15 +54,40 @@ function AddTraining() {
       <Dialog onClose={handleClose} open={dialogOpen}>
         <DialogTitle>Add Training</DialogTitle>
         <DialogContent>
+          <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enUS}>
+            <DateTimePicker
+              label="Date"
+              sx={{
+                marginTop: "10px",
+                marginBottom: "5px"
+              }}
+            />
+          </LocalizationProvider>
           <TextField
-            name="date"
-            value={training.date}
-            label="Date"
+            name="duration"
+            value={training.duration}
+            label="Duration in minutes"
             margin="dense"
             onChange={inputChanged}
             fullWidth={true}
           />
-          
+          <TextField
+            name="activity"
+            value={training.activity}
+            label="Activity"
+            margin="dense"
+            onChange={inputChanged}
+            fullWidth={true}
+          />
+          <TextField
+            name="customerId"
+            value={customerId}
+            label="Customer ID"
+            margin="dense"
+            onChange={inputChanged}
+            fullWidth={true}
+          />
+
         </DialogContent>
         <DialogActions>
           <Button onClick={handleSave}>Save</Button>
