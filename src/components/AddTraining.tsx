@@ -14,6 +14,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { enUS } from "date-fns/locale";
 
 import { Training } from "../types/training";
+import { parseISO } from "date-fns";
 
 function AddTraining() {
   const [training, setTraining] = useState<Training>({
@@ -23,7 +24,7 @@ function AddTraining() {
     activity: "",
     customer: null,
   });
-  const [customerId, setCustomerId] = useState(0);
+  const [customerId, setCustomerId] = useState<number | string>(0);
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleClose = () => {
@@ -42,6 +43,18 @@ function AddTraining() {
     setDialogOpen(true);
   }
 
+  // Transform date text to ISO format
+  const transformDate = (dateText: Date | null) => {
+    if (dateText != null) {
+      try {
+        const transformDate = dateText.toISOString()
+        setTraining({ ...training, date: transformDate })
+      } catch(err) {
+        console.error(err);
+      }
+    }
+  }
+
   return (
     <>
       <Button
@@ -57,10 +70,13 @@ function AddTraining() {
           <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enUS}>
             <DateTimePicker
               label="Date"
+              value={parseISO(training.date)}
               sx={{
                 marginTop: "10px",
-                marginBottom: "5px"
+                marginBottom: "5px",
+                width: "100%"
               }}
+              onChange={(newValue) => transformDate(newValue)}
             />
           </LocalizationProvider>
           <TextField
@@ -84,7 +100,7 @@ function AddTraining() {
             value={customerId}
             label="Customer ID"
             margin="dense"
-            onChange={inputChanged}
+            onChange={(event: ChangeEvent<HTMLInputElement>) => setCustomerId(event.target.value)}
             fullWidth={true}
           />
 
