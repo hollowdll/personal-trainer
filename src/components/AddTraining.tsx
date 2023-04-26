@@ -31,6 +31,17 @@ function AddTraining({ addTraining }: Props) {
   const [customerId, setCustomerId] = useState(0);
   const [dialogOpen, setDialogOpen] = useState(false);
 
+  const resetTraining = () => {
+    setTraining({
+      id: 0,
+      date: "",
+      duration: 0,
+      activity: "",
+      customer: null,
+    });
+    setCustomerId(0);
+  }
+
   const handleClose = () => {
     setDialogOpen(false);
   }
@@ -38,6 +49,7 @@ function AddTraining({ addTraining }: Props) {
   const handleSave = () => {
     addTraining(training, customerId);
     handleClose();
+    resetTraining();
   }
 
   const inputChanged = (event: ChangeEvent<HTMLInputElement>) => {
@@ -89,7 +101,10 @@ function AddTraining({ addTraining }: Props) {
             value={training.duration}
             label="Duration in minutes"
             margin="dense"
-            onChange={inputChanged}
+            onChange={(event: ChangeEvent<HTMLInputElement>) => {
+              const value = parseInt(event.target.value);
+              if (value >= 0) setTraining({ ...training, duration: value });
+            }}
             fullWidth={true}
           />
           <TextField
@@ -106,8 +121,8 @@ function AddTraining({ addTraining }: Props) {
             label="Customer ID"
             margin="dense"
             onChange={(event: ChangeEvent<HTMLInputElement>) => {
-              const id = parseInt(event.target.value);
-              if (id) setCustomerId(id);
+              const value = parseInt(event.target.value);
+              if (value >= 0) setCustomerId(value);
             }}
             fullWidth={true}
           />
