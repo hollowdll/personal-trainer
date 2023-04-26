@@ -5,7 +5,8 @@ import "ag-grid-community/styles/ag-theme-material.css";
 import { ValueGetterParams } from "ag-grid-community";
 import { format } from "date-fns";
 import { enUS } from "date-fns/locale";
-import { Stack } from "@mui/material";
+import { IconButton, Stack } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import { Training } from "../types/training";
 import AddTraining from "./AddTraining";
@@ -43,12 +44,23 @@ function TrainingList() {
         const customer = params?.data?.customer;
         return customer ? customer.id : "No customer found";
       }
+    },
+    // Delete button column
+    {
+      headerName: "",
+      field: "id",
+      filter: false,
+      sortable: false,
+      cellStyle: { border: "none" },
+      cellRenderer: (params: ValueGetterParams<Training>) => {
+        return (
+          <IconButton onClick={() => deleteTraining(params.getValue("id"))} color="error">
+            <DeleteIcon />
+          </IconButton>
+        )
+      }
     }
   ];
-
-  useEffect(() => {
-    fetchTrainings();
-  }, []);
 
   // Fetch all trainings
   const fetchTrainings = () => {
@@ -90,6 +102,32 @@ function TrainingList() {
       })
       .catch((err) => console.error(err));
   }
+
+  // Delete a training
+  const deleteTraining = (id: number) => {
+    console.log("DELETE TRAINING")
+    console.log(id);
+
+    if (window.confirm("Are you sure you want to delete this training?")) {
+      fetch(`${API_HOST_URL}/api/trainings/${id}`, {
+        method: "DELETE",
+      })
+        .then((response) => {
+          if (!response.ok) {
+            setMessage("Failed to delete training");
+            throw new Error("Fetch failed: " + response.statusText);
+          }
+
+          setMessage("Training deleted successfully");
+          fetchTrainings();
+        })
+        .catch((err) => console.error(err));
+    }
+  }
+
+  useEffect(() => {
+    fetchTrainings();
+  }, []);
 
   return (
     <div>
