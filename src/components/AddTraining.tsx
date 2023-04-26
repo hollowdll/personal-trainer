@@ -16,7 +16,11 @@ import { enUS } from "date-fns/locale";
 import { Training } from "../types/training";
 import { parseISO } from "date-fns";
 
-function AddTraining() {
+type Props = {
+  addTraining: (training: Training, customerId: number) => void,
+}
+
+function AddTraining({ addTraining }: Props) {
   const [training, setTraining] = useState<Training>({
     id: 0,
     date: "",
@@ -24,7 +28,7 @@ function AddTraining() {
     activity: "",
     customer: null,
   });
-  const [customerId, setCustomerId] = useState<number | string>(0);
+  const [customerId, setCustomerId] = useState(0);
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleClose = () => {
@@ -32,6 +36,7 @@ function AddTraining() {
   }
 
   const handleSave = () => {
+    addTraining(training, customerId);
     handleClose();
   }
 
@@ -47,8 +52,8 @@ function AddTraining() {
   const transformDate = (dateText: Date | null) => {
     if (dateText != null) {
       try {
-        const transformDate = dateText.toISOString()
-        setTraining({ ...training, date: transformDate })
+        const transformedDate = dateText.toISOString()
+        setTraining({ ...training, date: transformedDate })
       } catch(err) {
         console.error(err);
       }
@@ -100,7 +105,10 @@ function AddTraining() {
             value={customerId}
             label="Customer ID"
             margin="dense"
-            onChange={(event: ChangeEvent<HTMLInputElement>) => setCustomerId(event.target.value)}
+            onChange={(event: ChangeEvent<HTMLInputElement>) => {
+              const id = parseInt(event.target.value);
+              if (id) setCustomerId(id);
+            }}
             fullWidth={true}
           />
 
