@@ -2,21 +2,33 @@
 
 import { Button } from "@mui/material";
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import { GridApi } from "ag-grid-community";
 
 import { Customer } from "../types/customer";
 
 type Props = {
-  customers: Array<Customer>,
+  gridApi: GridApi<Customer> | undefined,
 }
 
-function CustomerExport({ customers }: Props) {
-  const exportCustomersToCsvFile = () => {
-    console.log("EXPORT TO CSV");
-    console.log(customers);
+function CustomerExport({ gridApi }: Props) {
+  const getParams = () => {
+    return {
+      columnKeys: [
+        "id",
+        "firstname",
+        "lastname",
+        "streetaddress",
+        "postcode",
+        "city",
+        "email",
+        "phone"
+      ]
+    };
   }
 
-  const downloadFile = () => {
-    console.log("DOWNLOADED");
+  const exportCustomersToCsvFile = () => {
+    console.log("EXPORT TO CSV");
+    gridApi?.exportDataAsCsv(getParams());
   }
 
   return (

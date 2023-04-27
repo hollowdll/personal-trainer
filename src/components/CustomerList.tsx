@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
@@ -16,6 +16,7 @@ import { API_HOST_URL } from "../utils/const";
 function CustomerList() {
   const [customers, setCustomers] = useState<Array<Customer>>([]);
   const [message, setMessage] = useState("");
+  const gridRef = useRef<AgGridReact<Customer>>(null);
 
   const columnDefs = [
     { headerName: "ID", field: "id" },
@@ -163,10 +164,11 @@ function CustomerList() {
       <h3>{message}</h3>
       <Stack spacing={2} direction="row">
         <AddCustomer addCustomer={addCustomer} />
-        <CustomerExport customers={customers} />
+        <CustomerExport gridApi={gridRef?.current?.api} />
       </Stack>
       <div className="ag-theme-material" style={{ height: "500px" }}>
-        <AgGridReact
+        <AgGridReact<Customer>
+          ref={gridRef}
           columnDefs={columnDefs}
           rowData={customers}
           animateRows={true}
