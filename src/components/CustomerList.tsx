@@ -9,6 +9,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 import AddCustomer from "./AddCustomer";
 import EditCustomer from "./EditCustomer";
+import CustomerExport from "./CustomerExport";
 
 import { API_HOST_URL } from "../utils/const";
 
@@ -162,6 +163,7 @@ function CustomerList() {
       <h3>{message}</h3>
       <Stack spacing={2} direction="row">
         <AddCustomer addCustomer={addCustomer} />
+        <CustomerExport customers={customers} />
       </Stack>
       <div className="ag-theme-material" style={{ height: "500px" }}>
         <AgGridReact
