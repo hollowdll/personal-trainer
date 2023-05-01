@@ -34,15 +34,15 @@ function TrainingCalendar() {
 
   const fetchTrainings = () => {
     fetch(`${API_HOST_URL}/gettrainings`)
-      .then(response => {
+      .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch trainings data");
         }
         return response.json();
       })
-      .then(data => setTrainings(data))
-      .catch(err => console.error(err));
-  }
+      .then((data) => setTrainings(data))
+      .catch((err) => console.error(err));
+  };
 
   // Create calendar event of training
   const createEvent = (training: Training): TrainingEvent => {
@@ -66,17 +66,17 @@ function TrainingCalendar() {
   }, [trainings]);
 
   return (
-    <div>
-    <Calendar
-      className="calendar"
-      localizer={localizer}
-      events={eventsList}
-      startAccessor="start"
-      endAccessor="end"
-      style={{ height: 500 }}
-    />
-  </div>
-  )
+    <>
+      <Calendar
+        className="calendar"
+        localizer={localizer}
+        events={eventsList}
+        startAccessor="start"
+        endAccessor="end"
+        style={{ height: 500 }}
+      />
+    </>
+  );
 }
 
 export default TrainingCalendar;
