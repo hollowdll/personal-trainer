@@ -5,12 +5,12 @@ import "ag-grid-community/styles/ag-theme-material.css";
 import { ValueGetterParams } from "ag-grid-community";
 import { format } from "date-fns";
 import { enUS } from "date-fns/locale";
-import { IconButton, Stack, Tooltip } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { Stack } from "@mui/material";
 
 import CircularLoading from "./CircularLoading";
-import { Training } from "../types/training";
 import AddTraining from "./AddTraining";
+import DeleteItemDialog from "./DeleteItemDialog";
+import { Training } from "../types/training";
 import { API_HOST_URL } from "../utils/const";
 
 function TrainingList() {
@@ -56,11 +56,7 @@ function TrainingList() {
       cellStyle: { border: "none" },
       cellRenderer: (params: ValueGetterParams<Training>) => {
         return (
-          <Tooltip title="Delete">
-            <IconButton onClick={() => deleteTraining(params.getValue("id"))} color="error">
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
+          <DeleteItemDialog deleteItem={deleteTraining} itemId={params.getValue("id")} />
         )
       }
     }
@@ -109,25 +105,23 @@ function TrainingList() {
 
   // Delete a training
   const deleteTraining = (id: number) => {
-    console.log("DELETE TRAINING")
+    console.log("DELETE TRAINING");
     console.log(id);
 
-    if (window.confirm("Are you sure you want to delete this training?")) {
-      fetch(`${API_HOST_URL}/api/trainings/${id}`, {
-        method: "DELETE",
-      })
-        .then((response) => {
-          if (!response.ok) {
-            setMessage("Failed to delete training");
-            throw new Error("Fetch failed: " + response.statusText);
-          }
+    fetch(`${API_HOST_URL}/api/trainings/${id}`, {
+      method: "DELETE",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          setMessage("Failed to delete training");
+          throw new Error("Fetch failed: " + response.statusText);
+        }
 
-          setMessage("Training deleted successfully");
-          fetchTrainings();
-        })
-        .catch((err) => console.error(err));
-    }
-  }
+        setMessage("Training deleted successfully");
+        fetchTrainings();
+      })
+      .catch((err) => console.error(err));
+  };
 
   useEffect(() => {
     fetchTrainings();

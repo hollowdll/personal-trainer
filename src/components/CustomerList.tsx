@@ -3,12 +3,12 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 import { Customer } from "../types/customer";
-import { IconButton, Stack, Tooltip } from "@mui/material";
+import { Stack } from "@mui/material";
 import { ValueGetterParams } from "ag-grid-community";
-import DeleteIcon from "@mui/icons-material/Delete";
 
 import AddCustomer from "./AddCustomer";
 import EditCustomer from "./EditCustomer";
+import DeleteItemDialog from "./DeleteItemDialog";
 import CustomerCsvExport from "./CustomerCsvExport";
 
 import { API_HOST_URL } from "../utils/const";
@@ -56,11 +56,7 @@ function CustomerList() {
       cellStyle: { border: "none" },
       cellRenderer: (params: ValueGetterParams<Customer>) => {
         return (
-          <Tooltip title="Delete">
-            <IconButton onClick={() => deleteCustomer(params.getValue("id"))} color="error">
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
+          <DeleteItemDialog deleteItem={deleteCustomer} itemId={params.getValue("id")} />
         )
       }
     }
@@ -142,25 +138,23 @@ function CustomerList() {
 
   // Delete a customer
   const deleteCustomer = (id: number) => {
-    console.log("DELETE CUSTOMER")
+    console.log("DELETE CUSTOMER");
     console.log(id);
 
-    if (window.confirm("Are you sure you want to delete this customer?")) {
-      fetch(`${API_HOST_URL}/api/customers/${id}`, {
-        method: "DELETE",
-      })
-        .then((response) => {
-          if (!response.ok) {
-            setMessage("Failed to delete customer");
-            throw new Error("Fetch failed: " + response.statusText);
-          }
+    fetch(`${API_HOST_URL}/api/customers/${id}`, {
+      method: "DELETE",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          setMessage("Failed to delete customer");
+          throw new Error("Fetch failed: " + response.statusText);
+        }
 
-          setMessage("Customer deleted successfully");
-          fetchCustomers();
-        })
-        .catch((err) => console.error(err));
-    }
-  }
+        setMessage("Customer deleted successfully");
+        fetchCustomers();
+      })
+      .catch((err) => console.error(err));
+  };
 
   useEffect(() => {
     fetchCustomers();
