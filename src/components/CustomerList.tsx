@@ -4,7 +4,7 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 import { Customer } from "../types/customer";
 import { Stack } from "@mui/material";
-import { ValueGetterParams } from "ag-grid-community";
+import { ValueGetterParams, GridApi } from "ag-grid-community";
 
 import AddCustomer from "./AddCustomer";
 import EditCustomer from "./EditCustomer";
@@ -56,7 +56,7 @@ function CustomerList() {
       cellStyle: { border: "none" },
       cellRenderer: (params: ValueGetterParams<Customer>) => {
         return (
-          <DeleteItemDialog deleteItem={deleteCustomer} itemId={params.getValue("id")} />
+          <DeleteItemDialog deleteItem={deleteCustomer} itemId={params.getValue("id")} itemName="customer" />
         )
       }
     }
@@ -156,6 +156,10 @@ function CustomerList() {
       .catch((err) => console.error(err));
   };
 
+  const getGridApi = (): GridApi<Customer> | undefined => {
+    return gridRef?.current?.api;
+  }
+
   useEffect(() => {
     fetchCustomers();
     setTimeout(() => {
@@ -163,16 +167,16 @@ function CustomerList() {
     }, 500);
   }, []);
 
-  if (loading) return <CircularLoading />
+  if (loading) return <CircularLoading />;
   else {
     return (
       <>
         <h2 className="message">{message}</h2>
-        <Stack spacing={2} direction="row">
-          <AddCustomer addCustomer={addCustomer} />
-          <CustomerCsvExport gridApi={gridRef?.current?.api} />
-        </Stack>
         <div className="ag-theme-material" style={{ height: "500px" }}>
+          <Stack spacing={2} direction="row">
+            <AddCustomer addCustomer={addCustomer} />
+            <CustomerCsvExport getGridApi={getGridApi} />
+          </Stack>
           <AgGridReact<Customer>
             ref={gridRef}
             columnDefs={columnDefs}

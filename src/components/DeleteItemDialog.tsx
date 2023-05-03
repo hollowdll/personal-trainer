@@ -14,9 +14,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 type Props = {
   deleteItem: (itemId: number) => void,
   itemId: number,
+  itemName: string,
 }
 
-function DeleteItemDialog({ deleteItem, itemId }: Props) {
+function DeleteItemDialog({ deleteItem, itemId, itemName }: Props) {
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {
@@ -40,10 +41,10 @@ function DeleteItemDialog({ deleteItem, itemId }: Props) {
         </IconButton>
       </Tooltip>
       <Dialog onClose={handleClose} open={open}>
-        <DialogTitle>Delete this item?</DialogTitle>
+        <DialogTitle>{`Delete this ${itemName}?`}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            This item will be deleted and will no longer be available.
+            {`This ${itemName} will be deleted and will no longer be available.`}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

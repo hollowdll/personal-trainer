@@ -56,7 +56,7 @@ function TrainingList() {
       cellStyle: { border: "none" },
       cellRenderer: (params: ValueGetterParams<Training>) => {
         return (
-          <DeleteItemDialog deleteItem={deleteTraining} itemId={params.getValue("id")} />
+          <DeleteItemDialog deleteItem={deleteTraining} itemId={params.getValue("id")} itemName="training" />
         )
       }
     }

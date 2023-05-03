@@ -8,16 +8,17 @@ import {
   TextField,
   Dialog,
   Button,
+  DialogContentText,
 } from '@mui/material';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { CsvExportParams, GridApi } from "ag-grid-community";
 import { Customer } from "../types/customer";
 
 type Props = {
-  gridApi: GridApi<Customer> | undefined,
+  getGridApi: () => GridApi<Customer> | undefined,
 }
 
-function CustomerCsvExport({ gridApi }: Props) {
+function CustomerCsvExport({ getGridApi }: Props) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [fileName, setFileName] = useState("");
 
@@ -39,7 +40,7 @@ function CustomerCsvExport({ gridApi }: Props) {
 
   const exportCustomersToCsvFile = () => {
     console.log("EXPORT TO CSV");
-    gridApi?.exportDataAsCsv(getParams());
+    getGridApi()?.exportDataAsCsv(getParams());
   }
 
   const handleClose = () => {
@@ -79,6 +80,9 @@ function CustomerCsvExport({ gridApi }: Props) {
             onChange={inputChanged}
             fullWidth={true}
           />
+          <DialogContentText>
+            {`${getGridApi() ? "" : "Data cannot be downloaded due to an unexpected error"}`}
+          </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDownload}>Download</Button>
