@@ -32,6 +32,8 @@ function CustomerList() {
     // Edit button column
     {
       headerName: "",
+      width: 100,
+      maxWidth: 125,
       filter: false,
       sortable: false,
       resizable: false,
@@ -45,7 +47,8 @@ function CustomerList() {
     // Delete button column
     {
       headerName: "",
-      width: 50,
+      width: 100,
+      maxWidth: 125,
       field: "id",
       filter: false,
       sortable: false,
@@ -170,7 +173,7 @@ function CustomerList() {
   else {
     return (
       <>
-        <h2>{message}</h2>
+        <h2 className="message">{message}</h2>
         <Stack spacing={2} direction="row">
           <AddCustomer addCustomer={addCustomer} />
           <CustomerCsvExport gridApi={gridRef?.current?.api} />
@@ -187,6 +190,9 @@ function CustomerList() {
               sortable: true,
               resizable: true,
               floatingFilter: true,
+              autoHeight: true,
+              wrapText: true,
+              minWidth: 200,
             }}
           ></AgGridReact>
         </div>

@@ -49,6 +49,7 @@ function TrainingList() {
     // Delete button column
     {
       headerName: "",
+      maxWidth: 150,
       field: "id",
       filter: false,
       sortable: false,
@@ -139,11 +140,11 @@ function TrainingList() {
   else {
     return (
       <>
-        <h2>{message}</h2>
+        <h2 className="message">{message}</h2>
         <Stack spacing={2} direction="row">
           <AddTraining addTraining={addTraining} />
         </Stack>
-        <div className="ag-theme-material" style={{ height: "500px" }}>
+        <div className="ag-theme-material" style={{ width: '100%', height: "500px" }}>
           <AgGridReact
             columnDefs={columnDefs}
             rowData={trainings}
@@ -154,6 +155,9 @@ function TrainingList() {
               sortable: true,
               resizable: true,
               floatingFilter: true,
+              autoHeight: true,
+              wrapText: true,
+              minWidth: 200,
             }}
           ></AgGridReact>
         </div>
