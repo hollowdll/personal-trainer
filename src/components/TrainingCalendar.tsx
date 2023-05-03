@@ -7,6 +7,7 @@ import startOfWeek from 'date-fns/startOfWeek'
 import getDay from 'date-fns/getDay'
 import enUS from 'date-fns/locale/en-US'
 
+import CircularLoading from "./CircularLoading";
 import { Training } from "../types/training";
 import { API_HOST_URL } from "../utils/const";
 
@@ -31,6 +32,7 @@ interface TrainingEvent {
 function TrainingCalendar() {
   const [trainings, setTrainings] = useState<Array<Training>>([]);
   const [eventsList, setEventsList] = useState<Array<TrainingEvent>>([]);
+  const [loading, setLoading] = useState(true);
 
   const fetchTrainings = () => {
     fetch(`${API_HOST_URL}/gettrainings`)
@@ -63,20 +65,26 @@ function TrainingCalendar() {
 
   useEffect(() => {
     setEventsList(trainings.map(value => createEvent(value)));
+    setTimeout(() => {
+      setLoading(false);
+    }, 500)
   }, [trainings]);
 
-  return (
-    <>
-      <Calendar
-        className="calendar"
-        localizer={localizer}
-        events={eventsList}
-        startAccessor="start"
-        endAccessor="end"
-        style={{ height: 500 }}
-      />
-    </>
-  );
+  if (loading) return <CircularLoading />;
+  else {
+    return (
+      <>
+        <Calendar
+          className="calendar"
+          localizer={localizer}
+          events={eventsList}
+          startAccessor="start"
+          endAccessor="end"
+          style={{ height: 500 }}
+        />
+      </>
+    );
+  }
 }
 
 export default TrainingCalendar;

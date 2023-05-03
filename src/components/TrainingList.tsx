@@ -8,14 +8,15 @@ import { enUS } from "date-fns/locale";
 import { IconButton, Stack } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
+import CircularLoading from "./CircularLoading";
 import { Training } from "../types/training";
 import AddTraining from "./AddTraining";
-
 import { API_HOST_URL } from "../utils/const";
 
 function TrainingList() {
   const [trainings, setTrainings] = useState<Array<Training>>([]);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(true);
   
   const columnDefs = [
     { headerName: "ID", field: "id" },
@@ -127,31 +128,36 @@ function TrainingList() {
 
   useEffect(() => {
     fetchTrainings();
+    setTimeout(() => {
+      setLoading(false);
+    }, 500)
   }, []);
 
-  return (
-    <div>
-      <h1>Trainings</h1>
-      <h3>{message}</h3>
-      <Stack spacing={2} direction="row">
-        <AddTraining addTraining={addTraining} />
-      </Stack>
-      <div className="ag-theme-material" style={{ height: "500px" }}>
-        <AgGridReact
-          columnDefs={columnDefs}
-          rowData={trainings}
-          animateRows={true}
-          defaultColDef={{
-            flex: 1,
-            filter: true,
-            sortable: true,
-            resizable: true,
-            floatingFilter: true
-          }}
-        ></AgGridReact>
-      </div>
-    </div>
-  );
+  if (loading) return <CircularLoading />;
+  else {
+    return (
+      <>
+        <h2>{message}</h2>
+        <Stack spacing={2} direction="row">
+          <AddTraining addTraining={addTraining} />
+        </Stack>
+        <div className="ag-theme-material" style={{ height: "500px" }}>
+          <AgGridReact
+            columnDefs={columnDefs}
+            rowData={trainings}
+            animateRows={true}
+            defaultColDef={{
+              flex: 1,
+              filter: true,
+              sortable: true,
+              resizable: true,
+              floatingFilter: true,
+            }}
+          ></AgGridReact>
+        </div>
+      </>
+    );
+  }
 }
 
 export default TrainingList;

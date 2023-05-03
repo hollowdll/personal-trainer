@@ -12,10 +12,12 @@ import EditCustomer from "./EditCustomer";
 import CustomerCsvExport from "./CustomerCsvExport";
 
 import { API_HOST_URL } from "../utils/const";
+import CircularLoading from "./CircularLoading";
 
 function CustomerList() {
   const [customers, setCustomers] = useState<Array<Customer>>([]);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(true);
   const gridRef = useRef<AgGridReact<Customer>>(null);
 
   const columnDefs = [
@@ -156,33 +158,38 @@ function CustomerList() {
 
   useEffect(() => {
     fetchCustomers();
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
   }, []);
 
-  return (
-    <div>
-      <h1>Customers</h1>
-      <h3>{message}</h3>
-      <Stack spacing={2} direction="row">
-        <AddCustomer addCustomer={addCustomer} />
-        <CustomerCsvExport gridApi={gridRef?.current?.api} />
-      </Stack>
-      <div className="ag-theme-material" style={{ height: "500px" }}>
-        <AgGridReact<Customer>
-          ref={gridRef}
-          columnDefs={columnDefs}
-          rowData={customers}
-          animateRows={true}
-          defaultColDef={{
-            flex: 1,
-            filter: true,
-            sortable: true,
-            resizable: true,
-            floatingFilter: true,
-          }}
-        ></AgGridReact>
-      </div>
-    </div>
-  );
+  if (loading) return <CircularLoading />
+  else {
+    return (
+      <>
+        <h2>{message}</h2>
+        <Stack spacing={2} direction="row">
+          <AddCustomer addCustomer={addCustomer} />
+          <CustomerCsvExport gridApi={gridRef?.current?.api} />
+        </Stack>
+        <div className="ag-theme-material" style={{ height: "500px" }}>
+          <AgGridReact<Customer>
+            ref={gridRef}
+            columnDefs={columnDefs}
+            rowData={customers}
+            animateRows={true}
+            defaultColDef={{
+              flex: 1,
+              filter: true,
+              sortable: true,
+              resizable: true,
+              floatingFilter: true,
+            }}
+          ></AgGridReact>
+        </div>
+      </>
+    );
+  }
 }
   
 export default CustomerList;
