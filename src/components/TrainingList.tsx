@@ -5,7 +5,7 @@ import "ag-grid-community/styles/ag-theme-material.css";
 import { ValueGetterParams } from "ag-grid-community";
 import { format } from "date-fns";
 import { enUS } from "date-fns/locale";
-import { IconButton, Stack } from "@mui/material";
+import { IconButton, Stack, Tooltip } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import CircularLoading from "./CircularLoading";
@@ -55,9 +55,11 @@ function TrainingList() {
       cellStyle: { border: "none" },
       cellRenderer: (params: ValueGetterParams<Training>) => {
         return (
-          <IconButton onClick={() => deleteTraining(params.getValue("id"))} color="error">
-            <DeleteIcon />
-          </IconButton>
+          <Tooltip title="Delete">
+            <IconButton onClick={() => deleteTraining(params.getValue("id"))} color="error">
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
         )
       }
     }

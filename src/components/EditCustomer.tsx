@@ -6,7 +6,8 @@ import {
   Dialog,
   TextField,
   IconButton,
-  Button
+  Button,
+  Tooltip,
 } from '@mui/material';
 import { ValueGetterParams } from "ag-grid-community";
 import { Customer } from "../types/customer";
@@ -60,9 +61,11 @@ function EditCustomer({ updateCustomer, params }: Props) {
 
   return (
     <div>
-      <IconButton onClick={handleClickOpen} color="primary">
-        <EditIcon />
-      </IconButton>
+      <Tooltip title="Edit">
+        <IconButton onClick={handleClickOpen} color="primary">
+          <EditIcon />
+        </IconButton>
+      </Tooltip>
       <Dialog onClose={handleClose} open={dialogOpen}>
         <DialogTitle>Edit Customer</DialogTitle>
         <DialogContent>

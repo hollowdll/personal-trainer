@@ -76,7 +76,15 @@ function TrainingStatistics() {
   if (loading) return <CircularLoading />;
   else {
     return (
-      <>
+      <div className="bar-chart">
+        <h2
+          style={{
+            textAlign: "center",
+            fontFamily: "sans-serif, Arial, Helvetica",
+          }}
+        >
+          Training statistics by duration in minutes
+        </h2>
         <ResponsiveContainer width="100%" aspect={3}>
           <BarChart width={730} height={250} data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -92,7 +100,7 @@ function TrainingStatistics() {
             <Bar dataKey="duration" fill="#8884d8" isAnimationActive={true} />
           </BarChart>
         </ResponsiveContainer>
-      </>
+      </div>
     );
   }
 }

@@ -3,7 +3,7 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 import { Customer } from "../types/customer";
-import { IconButton, Stack } from "@mui/material";
+import { IconButton, Stack, Tooltip } from "@mui/material";
 import { ValueGetterParams } from "ag-grid-community";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -32,9 +32,9 @@ function CustomerList() {
     // Edit button column
     {
       headerName: "",
-      width: 50,
       filter: false,
       sortable: false,
+      resizable: false,
       cellStyle: { border: "none" },
       cellRenderer: (params: ValueGetterParams<Customer>) => {
         return (
@@ -49,12 +49,15 @@ function CustomerList() {
       field: "id",
       filter: false,
       sortable: false,
+      resizable: false,
       cellStyle: { border: "none" },
       cellRenderer: (params: ValueGetterParams<Customer>) => {
         return (
-          <IconButton onClick={() => deleteCustomer(params.getValue("id"))} color="error">
-            <DeleteIcon />
-          </IconButton>
+          <Tooltip title="Delete">
+            <IconButton onClick={() => deleteCustomer(params.getValue("id"))} color="error">
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
         )
       }
     }
