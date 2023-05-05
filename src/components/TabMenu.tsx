@@ -1,16 +1,11 @@
-import { useState } from 'react';
-import {
-  AppBar,
-  Typography,
-  Toolbar,
-  IconButton,
-} from "@mui/material";
-import CustomerList from './CustomerList';
-import TrainingList from './TrainingList';
-import TrainingCalendar from './TrainingCalendar';
-import TrainingStatistics from './TrainingStatistics';
-import MenuIcon from '@mui/icons-material/Menu';
-import MenuDrawer from './MenuDrawer';
+import { useState } from "react";
+import { AppBar, Typography, Toolbar, IconButton } from "@mui/material";
+import CustomerList from "./CustomerList";
+import TrainingList from "./TrainingList";
+import TrainingCalendar from "./TrainingCalendar";
+import TrainingStatistics from "./TrainingStatistics";
+import MenuIcon from "@mui/icons-material/Menu";
+import MenuDrawer from "./MenuDrawer";
 
 function TabMenu() {
   const [currentPage, setCurrentPage] = useState("Customers");
@@ -18,16 +13,16 @@ function TabMenu() {
 
   const handleDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
-  }
+  };
 
   const closeDrawer = () => {
     setDrawerOpen(false);
-  }
+  };
 
   const changeCurrentPage = (value: string) => {
     setCurrentPage(value);
     closeDrawer();
-  }
+  };
 
   return (
     <>
@@ -43,8 +38,12 @@ function TabMenu() {
           >
             <MenuIcon />
           </IconButton>
-          <MenuDrawer open={drawerOpen} closeDrawer={closeDrawer} changeCurrentPage={changeCurrentPage} />
-          <Typography variant="h6" component="div">
+          <MenuDrawer
+            open={drawerOpen}
+            closeDrawer={closeDrawer}
+            changeCurrentPage={changeCurrentPage}
+          />
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1}}>
             Personal Trainer
           </Typography>
         </Toolbar>

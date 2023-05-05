@@ -83,10 +83,10 @@ function TrainingStatistics() {
             fontFamily: "sans-serif, Arial, Helvetica",
           }}
         >
-          Training statistics by duration in minutes
+          Training duration in minutes
         </h2>
-        <ResponsiveContainer width="100%" aspect={3}>
-          <BarChart width={730} height={250} data={chartData}>
+        <ResponsiveContainer width="100%" height={500}>
+          <BarChart width={700} height={250} data={chartData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="activity" />
             <YAxis
