@@ -1,31 +1,58 @@
 import { useState } from 'react';
-import { AppBar, Tabs, Tab } from '@mui/material';
+import {
+  AppBar,
+  Typography,
+  Toolbar,
+  IconButton,
+} from "@mui/material";
 import CustomerList from './CustomerList';
 import TrainingList from './TrainingList';
 import TrainingCalendar from './TrainingCalendar';
 import TrainingStatistics from './TrainingStatistics';
+import MenuIcon from '@mui/icons-material/Menu';
+import MenuDrawer from './MenuDrawer';
 
 function TabMenu() {
-  const [value, setValue] = useState("customers");
+  const [currentPage, setCurrentPage] = useState("Customers");
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const handleChange = (_event: React.SyntheticEvent, value: string) => {
-    setValue(value);
-  };
+  const handleDrawerToggle = () => {
+    setDrawerOpen(!drawerOpen);
+  }
+
+  const closeDrawer = () => {
+    setDrawerOpen(false);
+  }
+
+  const changeCurrentPage = (value: string) => {
+    setCurrentPage(value);
+    closeDrawer();
+  }
 
   return (
     <>
       <AppBar position="static">
-        <Tabs value={value} onChange={handleChange} textColor="inherit">
-          <Tab value="customers" label="Customers" />
-          <Tab value="trainings" label="Trainings" />
-          <Tab value="calendar" label="Calendar" />
-          <Tab value="statistics" label="Statistics" />
-        </Tabs>
+        <Toolbar>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+            onClick={handleDrawerToggle}
+          >
+            <MenuIcon />
+          </IconButton>
+          <MenuDrawer open={drawerOpen} closeDrawer={closeDrawer} changeCurrentPage={changeCurrentPage} />
+          <Typography variant="h6" component="div">
+            Personal Trainer
+          </Typography>
+        </Toolbar>
       </AppBar>
-      {value === "customers" && <CustomerList />}
-      {value === "trainings" && <TrainingList />}
-      {value === "calendar" && <TrainingCalendar />}
-      {value === "statistics" && <TrainingStatistics />}
+      {currentPage === "Customers" && <CustomerList />}
+      {currentPage === "Trainings" && <TrainingList />}
+      {currentPage === "Calendar" && <TrainingCalendar />}
+      {currentPage === "Statistics" && <TrainingStatistics />}
     </>
   );
 }
