@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { AppBar, Typography, Toolbar, IconButton } from "@mui/material";
+import { AppBar, Typography, Toolbar, IconButton, Tooltip } from "@mui/material";
 import CustomerList from "./CustomerList";
 import TrainingList from "./TrainingList";
 import TrainingCalendar from "./TrainingCalendar";
 import TrainingStatistics from "./TrainingStatistics";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuDrawer from "./MenuDrawer";
+import OptionsMenu from "./OptionsMenu";
 
 function TabMenu() {
   const [currentPage, setCurrentPage] = useState("Customers");
@@ -28,16 +29,18 @@ function TabMenu() {
     <>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-            onClick={handleDrawerToggle}
-          >
-            <MenuIcon />
-          </IconButton>
+          <Tooltip title="Menu">
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+              onClick={handleDrawerToggle}
+            >
+              <MenuIcon />
+            </IconButton>
+          </Tooltip>
           <MenuDrawer
             open={drawerOpen}
             closeDrawer={closeDrawer}
@@ -46,6 +49,7 @@ function TabMenu() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1}}>
             Personal Trainer
           </Typography>
+          <OptionsMenu />
         </Toolbar>
       </AppBar>
       {currentPage === "Customers" && <CustomerList />}
