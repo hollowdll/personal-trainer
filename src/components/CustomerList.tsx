@@ -1,22 +1,24 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, SyntheticEvent } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 import { Customer } from "../types/customer";
-import { Stack } from "@mui/material";
+import { Stack, IconButton, Snackbar } from "@mui/material";
 import { ValueGetterParams, GridApi } from "ag-grid-community";
 
 import AddCustomer from "./AddCustomer";
 import EditCustomer from "./EditCustomer";
 import DeleteItemDialog from "./DeleteItemDialog";
 import CustomerCsvExport from "./CustomerCsvExport";
+import CloseIcon from '@mui/icons-material/Close';
 
 import { API_HOST_URL } from "../utils/const";
 import CircularLoading from "./CircularLoading";
 
 function CustomerList() {
   const [customers, setCustomers] = useState<Array<Customer>>([]);
-  const [message, setMessage] = useState("");
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const gridRef = useRef<AgGridReact<Customer>>(null);
 
@@ -62,12 +64,25 @@ function CustomerList() {
     }
   ];
 
+  const showNotification = (message: string) => {
+    setNotificationMessage(message);
+    setNotificationOpen(true);
+  }
+
+  const handleCloseNotification = (event: SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setNotificationOpen(false);
+  };
+
   // Fetch all customers
   const fetchCustomers = () => {
     fetch(`${API_HOST_URL}/getcustomers`)
       .then(response => {
         if (!response.ok) {
-          throw new Error("Failed to fetch customers data");
+          showNotification("Failed to fetch customers data");
+          throw new Error("Fetch failed: " + response.statusText);
         }
 
         return response.json();
@@ -96,11 +111,10 @@ function CustomerList() {
     })
       .then(response => {
         if (!response.ok) {
-          setMessage("Failed to add customer");
+          showNotification("Failed to save customer");
           throw new Error("Fetch failed: " + response.statusText);
         }
-
-        setMessage("Customer added successfully");
+        showNotification("Customer saved successfully");
         fetchCustomers();
       })
       .catch((err) => console.error(err));
@@ -126,11 +140,10 @@ function CustomerList() {
     })
       .then((response) => {
         if (!response.ok) {
-          setMessage("Failed to update customer");
+          showNotification("Failed to update customer");
           throw new Error("Fetch failed: " + response.statusText);
         }
-
-        setMessage("Customer updated successfully");
+        showNotification("Customer updated successfully");
         fetchCustomers();
       })
       .catch((err) => console.error(err));
@@ -146,11 +159,10 @@ function CustomerList() {
     })
       .then((response) => {
         if (!response.ok) {
-          setMessage("Failed to delete customer");
+          showNotification("Failed to delete customer");
           throw new Error("Fetch failed: " + response.statusText);
         }
-
-        setMessage("Customer deleted successfully");
+        showNotification("Customer deleted successfully");
         fetchCustomers();
       })
       .catch((err) => console.error(err));
@@ -159,6 +171,17 @@ function CustomerList() {
   const getGridApi = (): GridApi<Customer> | undefined => {
     return gridRef?.current?.api;
   }
+
+  const notificationAction = (
+    <IconButton
+      size="small"
+      aria-label="close"
+      color="inherit"
+      onClick={handleCloseNotification}
+    >
+      <CloseIcon fontSize="small" />
+    </IconButton>
+  );
 
   useEffect(() => {
     fetchCustomers();
@@ -171,8 +194,7 @@ function CustomerList() {
   else {
     return (
       <>
-        <h2 className="message">{message}</h2>
-        <div className="ag-theme-material" style={{ height: "500px" }}>
+        <div className="ag-theme-material" style={{ height: "500px", marginTop: "1rem" }}>
           <Stack spacing={2} direction="row">
             <AddCustomer addCustomer={addCustomer} />
             <CustomerCsvExport getGridApi={getGridApi} />
@@ -194,6 +216,13 @@ function CustomerList() {
             }}
           ></AgGridReact>
         </div>
+        <Snackbar
+          open={notificationOpen}
+          autoHideDuration={5000}
+          onClose={handleCloseNotification}
+          message={notificationMessage}
+          action={notificationAction}
+        />
       </>
     );
   }

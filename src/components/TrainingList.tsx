@@ -134,11 +134,10 @@ function TrainingList() {
   else {
     return (
       <>
-        <h2 className="message">{message}</h2>
-        <Stack spacing={2} direction="row">
-          <AddTraining addTraining={addTraining} />
-        </Stack>
-        <div className="ag-theme-material" style={{ width: '100%', height: "500px" }}>
+        <div className="ag-theme-material" style={{ height: "500px", marginTop: "1rem" }}>
+          <Stack spacing={2} direction="row">
+            <AddTraining addTraining={addTraining} />
+          </Stack>
           <AgGridReact
             columnDefs={columnDefs}
             rowData={trainings}
