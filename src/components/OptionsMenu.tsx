@@ -1,4 +1,4 @@
-import { useState, MouseEvent } from "react";
+import { useState, MouseEvent, SyntheticEvent } from "react";
 import {
   Menu,
   MenuItem,
@@ -10,6 +10,7 @@ import {
   Dialog,
   Button,
   DialogContentText,
+  Snackbar,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { API_HOST_URL } from "../utils/const";
@@ -22,6 +23,8 @@ function OptionsMenu() {
   const [dialogContent, setDialogContent] = useState("");
   const [dialogAction, setDialogAction] = useState("");
   const [currentMenuItem, setCurrentMenuItem] = useState("");
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
 
   const handleClickOptionsOpen = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -44,6 +47,14 @@ function OptionsMenu() {
     }
   }
 
+  const handleCloseNotification = (event: SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setNotificationOpen(false);
+  };
+
   const handleMenuItemClick = (item: string) => {
     if (item === "Reset Database") {
       setCurrentMenuItem(item);
@@ -51,6 +62,7 @@ function OptionsMenu() {
       setDialogContent("If there is no data, doing this will restore default data. Use this with caution, as all the entries you have added will be reset as well.");
       setDialogAction("Reset");
       setDialogOpen(true);
+      handleCloseOptions();
     }
   }
 
@@ -62,6 +74,8 @@ function OptionsMenu() {
         if (!response.ok) {
           throw new Error("Fetch failed: " + response.statusText);
         }
+        setNotificationMessage("Database reset successfully!");
+        setNotificationOpen(true);
         console.log("Database reset successfully");
       })
       .catch((err) => console.error(err));
@@ -89,6 +103,12 @@ function OptionsMenu() {
           <Button onClick={handleCloseDialog}>Cancel</Button>
         </DialogActions>
       </Dialog>
+      <Snackbar
+        open={notificationOpen}
+        autoHideDuration={5000}
+        onClose={handleCloseNotification}
+        message={notificationMessage}
+      />
     </>
   );
 }
