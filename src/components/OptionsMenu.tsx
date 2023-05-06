@@ -13,6 +13,7 @@ import {
   Snackbar,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import CloseIcon from '@mui/icons-material/Close';
 import { API_HOST_URL } from "../utils/const";
 
 function OptionsMenu() {
@@ -51,9 +52,13 @@ function OptionsMenu() {
     if (reason === 'clickaway') {
       return;
     }
-
     setNotificationOpen(false);
   };
+
+  const showNotification = (message: string) => {
+    setNotificationMessage(message);
+    setNotificationOpen(true);
+  }
 
   const handleMenuItemClick = (item: string) => {
     if (item === "Reset Database") {
@@ -72,14 +77,24 @@ function OptionsMenu() {
     })
       .then((response) => {
         if (!response.ok) {
+          showNotification("Failed to reset database!");
           throw new Error("Fetch failed: " + response.statusText);
         }
-        setNotificationMessage("Database reset successfully!");
-        setNotificationOpen(true);
-        console.log("Database reset successfully");
+        showNotification("Database reset successfully!");
       })
       .catch((err) => console.error(err));
   };
+
+  const notificationAction = (
+    <IconButton
+      size="small"
+      aria-label="close"
+      color="inherit"
+      onClick={handleCloseNotification}
+    >
+      <CloseIcon fontSize="small" />
+    </IconButton>
+  );
 
   return (
     <>
@@ -108,6 +123,7 @@ function OptionsMenu() {
         autoHideDuration={5000}
         onClose={handleCloseNotification}
         message={notificationMessage}
+        action={notificationAction}
       />
     </>
   );
