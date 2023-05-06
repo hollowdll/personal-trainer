@@ -94,7 +94,6 @@ function CustomerList() {
   // Add a new customer
   const addCustomer = (customer: Customer) => {
     console.log("ADD CUSTOMER");
-    console.log(customer);
 
     fetch(`${API_HOST_URL}/api/customers`, {
       method: "POST",
@@ -123,7 +122,6 @@ function CustomerList() {
   // Update a customer
   const updateCustomer = (customer: Customer) => {
     console.log("UPDATE CUSTOMER");
-    console.log(customer);
 
     fetch(`${API_HOST_URL}/api/customers/${customer.id}`, {
       method: "PUT",
@@ -152,7 +150,6 @@ function CustomerList() {
   // Delete a customer
   const deleteCustomer = (id: number) => {
     console.log("DELETE CUSTOMER");
-    console.log(id);
 
     fetch(`${API_HOST_URL}/api/customers/${id}`, {
       method: "DELETE",
@@ -195,7 +192,7 @@ function CustomerList() {
     return (
       <>
         <div className="ag-theme-material" style={{ height: "500px", marginTop: "1rem" }}>
-          <Stack spacing={2} direction="row">
+          <Stack spacing={2} direction="row" >
             <AddCustomer addCustomer={addCustomer} />
             <CustomerCsvExport getGridApi={getGridApi} />
           </Stack>

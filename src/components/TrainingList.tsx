@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, SyntheticEvent } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 import { ValueGetterParams } from "ag-grid-community";
 import { format } from "date-fns";
 import { enUS } from "date-fns/locale";
-import { Stack } from "@mui/material";
+import { Stack, IconButton, Snackbar } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
 
 import CircularLoading from "./CircularLoading";
 import AddTraining from "./AddTraining";
@@ -15,7 +16,8 @@ import { API_HOST_URL } from "../utils/const";
 
 function TrainingList() {
   const [trainings, setTrainings] = useState<Array<Training>>([]);
-  const [message, setMessage] = useState("");
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
   const [loading, setLoading] = useState(true);
   
   const columnDefs = [
@@ -62,12 +64,25 @@ function TrainingList() {
     }
   ];
 
+  const showNotification = (message: string) => {
+    setNotificationMessage(message);
+    setNotificationOpen(true);
+  }
+
+  const handleCloseNotification = (event: SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setNotificationOpen(false);
+  };
+
   // Fetch all trainings
   const fetchTrainings = () => {
     fetch(`${API_HOST_URL}/gettrainings`)
       .then(response => {
         if (!response.ok) {
-          throw new Error("Failed to fetch trainings data");
+          showNotification("Failed to fetch trainings data");
+          throw new Error("Fetch failed: " + response.statusText);
         }
 
         return response.json();
@@ -79,7 +94,6 @@ function TrainingList() {
   // Add a new training to customer
   const addTraining = (training: Training, customerId: number) => {
     console.log("ADD TRAINING");
-    console.log(training);
 
     fetch(`${API_HOST_URL}/api/trainings`, {
       method: "POST",
@@ -93,11 +107,10 @@ function TrainingList() {
     })
       .then(response => {
         if (!response.ok) {
-          setMessage("Failed to add training");
+          showNotification("Failed to save training");
           throw new Error("Fetch failed: " + response.statusText);
         }
-
-        setMessage("Training added successfully");
+        showNotification("Training saved successfully");
         fetchTrainings();
       })
       .catch((err) => console.error(err));
@@ -106,22 +119,31 @@ function TrainingList() {
   // Delete a training
   const deleteTraining = (id: number) => {
     console.log("DELETE TRAINING");
-    console.log(id);
 
     fetch(`${API_HOST_URL}/api/trainings/${id}`, {
       method: "DELETE",
     })
       .then((response) => {
         if (!response.ok) {
-          setMessage("Failed to delete training");
+          showNotification("Failed to delete training");
           throw new Error("Fetch failed: " + response.statusText);
         }
-
-        setMessage("Training deleted successfully");
+        showNotification("Training deleted successfully");
         fetchTrainings();
       })
       .catch((err) => console.error(err));
   };
+
+  const notificationAction = (
+    <IconButton
+      size="small"
+      aria-label="close"
+      color="inherit"
+      onClick={handleCloseNotification}
+    >
+      <CloseIcon fontSize="small" />
+    </IconButton>
+  );
 
   useEffect(() => {
     fetchTrainings();
@@ -154,6 +176,13 @@ function TrainingList() {
             }}
           ></AgGridReact>
         </div>
+        <Snackbar
+          open={notificationOpen}
+          autoHideDuration={5000}
+          onClose={handleCloseNotification}
+          message={notificationMessage}
+          action={notificationAction}
+        />
       </>
     );
   }
