@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import { CsvExportParams, GridApi } from "ag-grid-community";
-import { Customer } from "../types/customer";
+import { Customer } from "../../types/customer";
 
 type Props = {
   getGridApi: () => GridApi<Customer> | undefined,

@@ -8,11 +8,11 @@ import { enUS } from "date-fns/locale";
 import { Stack, IconButton, Snackbar } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 
-import CircularLoading from "./CircularLoading";
+import CircularLoading from "../CircularLoading";
 import AddTraining from "./AddTraining";
-import DeleteItemDialog from "./DeleteItemDialog";
-import { Training } from "../types/training";
-import { API_HOST_URL } from "../utils/const";
+import DeleteItemDialog from "../DeleteItemDialog";
+import { Training } from "../../types/training";
+import { API_HOST_URL } from "../../utils/const";
 
 function TrainingList() {
   const [trainings, setTrainings] = useState<Array<Training>>([]);

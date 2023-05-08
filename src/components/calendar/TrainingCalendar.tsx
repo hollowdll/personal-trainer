@@ -7,9 +7,9 @@ import startOfWeek from 'date-fns/startOfWeek'
 import getDay from 'date-fns/getDay'
 import enUS from 'date-fns/locale/en-US'
 
-import CircularLoading from "./CircularLoading";
-import { Training } from "../types/training";
-import { API_HOST_URL } from "../utils/const";
+import CircularLoading from "../CircularLoading";
+import { Training } from "../../types/training";
+import { API_HOST_URL } from "../../utils/const";
 
 const locales = {
   'en-US': enUS,

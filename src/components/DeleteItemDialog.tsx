@@ -1,3 +1,5 @@
+// Dialog to delete items, such as customers and trainings.
+
 import { useState } from "react";
 import {
   DialogActions,

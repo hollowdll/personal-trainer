@@ -1,5 +1,5 @@
 import './App.css'
-import TabMenu from './components/TabMenu';
+import TabMenu from './components/menu/TabMenu';
 
 function App() {
   return (

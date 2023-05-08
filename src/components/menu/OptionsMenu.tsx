@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CloseIcon from '@mui/icons-material/Close';
-import { API_HOST_URL } from "../utils/const";
+import { API_HOST_URL } from "../../utils/const";
 
 function OptionsMenu() {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);

@@ -10,7 +10,7 @@ import {
   Tooltip,
 } from '@mui/material';
 import { ValueGetterParams } from "ag-grid-community";
-import { Customer } from "../types/customer";
+import { Customer } from "../../types/customer";
 
 import EditIcon from "@mui/icons-material/Edit";
 

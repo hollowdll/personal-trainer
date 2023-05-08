@@ -2,18 +2,18 @@ import { useState, useEffect, useRef, SyntheticEvent } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
-import { Customer } from "../types/customer";
+import { Customer } from "../../types/customer";
 import { Stack, IconButton, Snackbar } from "@mui/material";
 import { ValueGetterParams, GridApi } from "ag-grid-community";
 
 import AddCustomer from "./AddCustomer";
 import EditCustomer from "./EditCustomer";
-import DeleteItemDialog from "./DeleteItemDialog";
+import DeleteItemDialog from "../DeleteItemDialog";
 import CustomerCsvExport from "./CustomerCsvExport";
 import CloseIcon from '@mui/icons-material/Close';
 
-import { API_HOST_URL } from "../utils/const";
-import CircularLoading from "./CircularLoading";
+import { API_HOST_URL } from "../../utils/const";
+import CircularLoading from "../CircularLoading";
 
 function CustomerList() {
   const [customers, setCustomers] = useState<Array<Customer>>([]);

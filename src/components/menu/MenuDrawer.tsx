@@ -1,3 +1,5 @@
+// This drawer menu contains all menu items
+
 import {
   Drawer,
   List,
@@ -25,19 +27,14 @@ function MenuDrawer({ open, closeDrawer }: Props) {
   const changePage = (text: string) => {
     let route = "/";
 
-    if (text === "Customers") {
-      route = "/customers";
-    } else if (text === "Trainings") {
-      route = "/trainings";
-    } else if (text === "Calendar") {
-      route = "/calendar";
-    } else if (text === "Statistics") {
-      route = "/statistics";
-    }
+    if (text === "Customers") route = "/customers";
+    else if (text === "Trainings") route = "/trainings";
+    else if (text === "Calendar") route = "/calendar";
+    else if (text === "Statistics") route = "/statistics";
 
     closeDrawer();
     navigate(route);
-  }
+  };
 
   return (
     <Drawer anchor="top" open={open} onClose={closeDrawer}>

@@ -1,13 +1,15 @@
+// App bar that contains menu and options
+
 import { useState } from "react";
 import { AppBar, Typography, Toolbar, IconButton, Tooltip } from "@mui/material";
-import CustomerList from "./CustomerList";
-import TrainingList from "./TrainingList";
-import TrainingCalendar from "./TrainingCalendar";
-import TrainingStatistics from "./TrainingStatistics";
+import CustomerList from "../customer/CustomerList";
+import TrainingList from "../training/TrainingList";
+import TrainingCalendar from "../calendar/TrainingCalendar";
+import TrainingStatistics from "../statistic/TrainingStatistics";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuDrawer from "./MenuDrawer";
 import OptionsMenu from "./OptionsMenu";
-import NotFound from "./NotFound";
+import NotFound from "../NotFound";
 import {
   BrowserRouter,
   Routes,

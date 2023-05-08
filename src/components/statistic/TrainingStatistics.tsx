@@ -9,9 +9,9 @@ import {
   Tooltip,
 } from "recharts";
 
-import { Training } from "../types/training";
-import { API_HOST_URL } from "../utils/const";
-import CircularLoading from "./CircularLoading";
+import { Training } from "../../types/training";
+import { API_HOST_URL } from "../../utils/const";
+import CircularLoading from "../CircularLoading";
 
 interface DataGroup {
   activity: string;

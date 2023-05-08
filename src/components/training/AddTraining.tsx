@@ -13,7 +13,7 @@ import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { enUS } from "date-fns/locale";
 
-import { Training } from "../types/training";
+import { Training } from "../../types/training";
 import { parseISO } from "date-fns";
 
 type Props = {
