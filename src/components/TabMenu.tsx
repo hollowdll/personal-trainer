@@ -7,9 +7,14 @@ import TrainingStatistics from "./TrainingStatistics";
 import MenuIcon from "@mui/icons-material/Menu";
 import MenuDrawer from "./MenuDrawer";
 import OptionsMenu from "./OptionsMenu";
+import NotFound from "./NotFound";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from "react-router-dom";
 
 function TabMenu() {
-  const [currentPage, setCurrentPage] = useState("Customers");
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const handleDrawerToggle = () => {
@@ -18,11 +23,6 @@ function TabMenu() {
 
   const closeDrawer = () => {
     setDrawerOpen(false);
-  };
-
-  const changeCurrentPage = (value: string) => {
-    setCurrentPage(value);
-    closeDrawer();
   };
 
   return (
@@ -41,21 +41,27 @@ function TabMenu() {
               <MenuIcon />
             </IconButton>
           </Tooltip>
-          <MenuDrawer
-            open={drawerOpen}
-            closeDrawer={closeDrawer}
-            changeCurrentPage={changeCurrentPage}
-          />
           <Typography variant="h6" component="div" sx={{ flexGrow: 1}}>
             Personal Trainer
           </Typography>
           <OptionsMenu />
         </Toolbar>
       </AppBar>
-      {currentPage === "Customers" && <CustomerList />}
-      {currentPage === "Trainings" && <TrainingList />}
-      {currentPage === "Calendar" && <TrainingCalendar />}
-      {currentPage === "Statistics" && <TrainingStatistics />}
+      
+      <BrowserRouter>
+        <MenuDrawer
+          open={drawerOpen}
+          closeDrawer={closeDrawer}
+        />
+        <Routes>
+          <Route path="/" element={<CustomerList />} />
+          <Route path="/customers" element={<CustomerList />} />
+          <Route path="/trainings" element={<TrainingList />} />
+          <Route path="/calendar" element={<TrainingCalendar />} />
+          <Route path="/statistics" element={<TrainingStatistics />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }

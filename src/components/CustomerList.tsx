@@ -192,7 +192,7 @@ function CustomerList() {
     return (
       <>
         <div className="ag-theme-material" style={{ height: "500px", marginTop: "1rem" }}>
-          <Stack spacing={2} direction="row" >
+          <Stack spacing={2} direction="row" style={{ marginLeft: '0.5rem' }} >
             <AddCustomer addCustomer={addCustomer} />
             <CustomerCsvExport getGridApi={getGridApi} />
           </Stack>
