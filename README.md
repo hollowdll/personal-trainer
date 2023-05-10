@@ -2,6 +2,10 @@
 
 Personal Trainer front end application used to manage customer data and their trainings.
 
+Includes a mobile friendly user interface.
+
+Built with React and TypeScript.
+
 # Demo
 
 The application is deployed to Vercel.
