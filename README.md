@@ -4,7 +4,9 @@ Personal Trainer front end application used to manage customer data and their tr
 
 # Demo
 
-Link to live demo: 
+The application is deployed to Vercel.
+
+[Link to live demo](https://personal-trainer-ruddy.vercel.app/)
 
 # Features
 
