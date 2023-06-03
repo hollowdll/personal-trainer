@@ -1,16 +1,18 @@
 # Overview
 
-Personal Trainer front end application used to manage customer data and their trainings.
+Personal Trainer front end application used to manage customers and their trainings.
 
 Includes a mobile friendly user interface.
 
-Built with React and TypeScript.
+Built with React and TypeScript. Uses several third party libraries.
 
 # Demo
 
-The application is deployed to Vercel.
+Currently no live deployment.
 
-[Link to live demo](https://personal-trainer-ruddy.vercel.app/)
+Previous deployment was in [Vercel](https://vercel.com/) so that's why you can find `vercel.json` file in the root.
+
+It allowed react router to work properly in the deployed version.
 
 # Features
 
